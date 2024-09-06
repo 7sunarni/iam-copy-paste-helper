@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "IAM CopyPaste Helper",
+    "version": "1.0.3",
+    "description": "IAM Copy Paste",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "background": {},
+    "permissions": [
+        "webRequest",
+        "storage",
+        "clipboardRead",
+        "clipboardWrite"
+    ],
+    "content_scripts": [
+        {
+            "run_at": "document_start",
+            "world": "MAIN",
+            "js": [
+                "scripts/content.js"
+            ],
+            "matches": [
+                "http://localhost:12345/"
+            ]
+        }
+    ]
+}
