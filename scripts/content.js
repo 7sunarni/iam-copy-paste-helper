@@ -25,11 +25,11 @@ class WebSocket extends nativeWebSocket {
         document.body.appendChild(text);
         text.focus();
         navigator.clipboard.readText().then((value) => {
-            wsconnection.send("9.clipboard,1.0,10.text/plain;")
             if (value === this.latestClipBoard){
                 return
             }
             this.latestClipBoard = value;
+            wsconnection.send("9.clipboard,1.0,10.text/plain;")
             let d = Base64.encode(value);
             let newmsg = "4.blob,1.0," + d.length + "." + d + ";";
             wsconnection.send(newmsg);
@@ -53,7 +53,7 @@ class WebSocket extends nativeWebSocket {
 }
 
 function messageReceived(message) {
-    if (message.data.includes("9.clipboard,1.0,10.text/plain")) {
+    if (!message.data.includes("9.clipboard,1.0,10.text/plain")) {
         return
     }
     msgs = message.data.split(";")
