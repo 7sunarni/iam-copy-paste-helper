@@ -22,6 +22,8 @@ class WebSocket extends nativeWebSocket {
         var text = document.createElement("input");
         text.setAttribute("id", "helper");
         text.style.position = "fixed"
+        text.style.width = "0"
+        text.style.height = "0"
         document.body.appendChild(text);
         text.focus();
         navigator.clipboard.readText().then((value) => {
