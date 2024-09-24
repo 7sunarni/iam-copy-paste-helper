@@ -7,6 +7,7 @@ class WebSocket extends nativeWebSocket {
     nativeConstructor = nativeWebSocket.prototype.constructor
     latestClipBoard = "";
     watched = 0;
+    created = 0;
 
     constructor(e) {
         console.log("IAM CopyPaste Helper: start to wrap websocket")
@@ -19,16 +20,13 @@ class WebSocket extends nativeWebSocket {
 
     // TODO: huge clipboard content
     readClipBoard(wsconnection) {
-        var text = document.createElement("input");
-        text.setAttribute("id", "helper");
-        text.style.position = "fixed"
-        text.style.width = "0"
-        text.style.height = "0"
-        document.body.appendChild(text);
+        var text = document.getElementById("helper");
+        text.value = "";
         text.focus();
         navigator.clipboard.readText().then((value) => {
             if (value === this.latestClipBoard){
-                return
+                // console.log("IAM CopyPaste Helper: not changed " + value + " " +this.latestClipBoard);
+                // return
             }
             this.latestClipBoard = value;
             wsconnection.send("9.clipboard,1.0,10.text/plain;")
@@ -43,6 +41,14 @@ class WebSocket extends nativeWebSocket {
     send(msg) {
         if (this.watched === 0) {
             this.watched = 1;
+            if( document.getElementById("helper") === null){
+                var text = document.createElement("input");
+                text.setAttribute("id", "helper");
+                text.style.position = "fixed"
+                text.style.width = "0"
+                text.style.height = "0"
+                document.body.appendChild(text);
+            }
             console.log("IAM CopyPaste Helper: run watch");
             this.watch();
         }
